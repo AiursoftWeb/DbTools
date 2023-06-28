@@ -24,6 +24,14 @@ namespace Aiursoft.DbTools.Tests
 
     public class MyDbContext : DbContext
     {
+        public MyDbContext()
+        {
+        }
+
+        public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
+        {
+        }
+
         public DbSet<Book> Books => Set<Book>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
