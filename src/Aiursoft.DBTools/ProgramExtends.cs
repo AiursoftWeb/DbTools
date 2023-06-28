@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Aiursoft.DBTools;
+namespace Aiursoft.DbTools;
 
 public static class ProgramExtends
 {

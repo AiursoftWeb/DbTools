@@ -1,0 +1,31 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Aiursoft.DbTools.Tests
+{
+    public class MyDbContext : DbContext
+    {
+        public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
+        {
+        }
+    }
+    
+    [TestClass]
+    public class ProgramExtendsTests
+    {
+        [TestMethod]
+        public async Task UpdateDbAsync_ShouldNotMigrate_WhenInEntityFramework()
+        {
+            // Arrange
+            var hostBuilder = Host.CreateDefaultBuilder();
+            hostBuilder.ConfigureServices(services => 
+                services.AddDbContext<MyDbContext>(config => 
+                    config.UseSqlite(@"DataSource=app.db;Cache=Shared"))
+            );
+            var host = hostBuilder.Build();
+            _ = await host.UpdateDbAsync<MyDbContext>();
+        }
+    }
+}

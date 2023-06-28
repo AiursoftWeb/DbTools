@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Aiursoft.DBTools;
+namespace Aiursoft.DbTools;
 
 public interface ISynchronizable<T>
 {
