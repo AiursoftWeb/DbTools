@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Aiursoft.DBTools;
 
-public interface ISyncable<T>
+public interface ISynchronizable<T>
 {
     bool EqualsInDb(T obj);
     T Map();
 }
 
-public static class EFExtends
+public static class EntityFrameworkExtends
 {
-    private static IEnumerable<M> DistinctBySync<T, M>(this IEnumerable<M> query) where M : ISyncable<T>
+    private static IEnumerable<M> DistinctBySync<T, M>(this IEnumerable<M> query) where M : ISynchronizable<T>
     {
         var knownKeys = new HashSet<M>();
         foreach (var element in query)
@@ -66,7 +62,7 @@ public static class EFExtends
     public static void Sync<T, M>(this DbSet<T> dbSet,
         IList<M> collection)
         where T : class
-        where M : ISyncable<T>
+        where M : ISynchronizable<T>
     {
         dbSet.Sync(t => true, collection);
     }
@@ -75,7 +71,7 @@ public static class EFExtends
         Expression<Func<T, bool>> filter,
         IList<M> collection)
         where T : class
-        where M : ISyncable<T>
+        where M : ISynchronizable<T>
     {
         foreach (var item in collection.DistinctBySync<T, M>())
         {
