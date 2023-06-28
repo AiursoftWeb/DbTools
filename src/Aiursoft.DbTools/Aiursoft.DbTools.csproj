@@ -25,6 +25,9 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.19" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.19" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.19" />
+		<!--TODO: Depercate this-->
+		<PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="3.9.2" />
 	</ItemGroup>
 
 </Project>
