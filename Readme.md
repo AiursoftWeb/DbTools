@@ -39,6 +39,19 @@ var built = services.BuildServiceProvider();
 var context = built.GetRequiredService<MyDbContext>();
 ```
 
+Easier to update database:
+
+```csharp
+var hostBuilder = Host.CreateDefaultBuilder();
+hostBuilder.ConfigureServices(services => 
+    services.AddAiurSqliteWithCache<MyDbContext>(@"DataSource=app.db;Cache=Shared")
+);
+var host = hostBuilder.Build();
+
+// Now update:
+await host.UpdateDbAsync<MyDbContext>(UpdateMode.CreateThenUse);
+```
+
 ## How to contribute
 
 There are many ways to contribute to the project: logging bugs, submitting pull requests, reporting issues, and creating suggestions.
