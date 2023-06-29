@@ -6,48 +6,66 @@ using Microsoft.Extensions.Logging;
 
 namespace Aiursoft.DbTools;
 
+public enum UpdateMode
+{
+    /// <summary>
+    /// Create the database and use it. Your project doesn't support migration. The db Context is fixed or requires manual SQL to update it. 
+    /// </summary>
+    CreateThenUse,
+
+    /// <summary>
+    /// Migrate the database and use it. If create directly, your database migration table is empty. So run all migrations instead. Make sure you have the 'Migrations' folder.
+    /// </summary>
+    MigrateThenUse,
+
+    /// <summary>
+    /// Drop everything and create everything. This is dangerous, but might be useful in UT.
+    /// </summary>
+    RecreateThenUse,
+}
+
 public static class ProgramExtends
 {
-    // TODO: Migrate to DB tools!
-    public static async Task<IHost> UpdateDbAsync<TContext>(this IHost host) where TContext : DbContext
+    public static async Task<IHost> UpdateDbAsync<TContext>(
+        this IHost host,
+        UpdateMode mode) where TContext : DbContext
     {
-        if (EntryExtends.IsInEntityFramework())
-        {
-            return host;
-        }
-        
         using var scope = host.Services.CreateScope();
         var services = scope.ServiceProvider;
         var logger = services.GetRequiredService<ILogger<TContext>>();
         var context = services.GetRequiredService<TContext>();
-        logger.LogInformation("Migrating database associated with context {ContextName}", typeof(TContext).Name);
+        if (EntryExtends.IsInEntityFramework())
+        {
+            logger.LogWarning($"This programme was triggered by Entity framework. We should do nothing");
+            return host;
+        }
+        
+        logger.LogInformation(
+            "Updating database associated with context {ContextName}. Relational: {Relational}. In memory: {InMemory}. In UT: {UT}",
+            typeof(TContext).Name,
+            context.Database.IsRelational(),
+            context.Database.IsInMemory(),
+            EntryExtends.IsInUnitTests());
 
         try
         {
-            // Some projects may not be able to migrated. So create first.
-            await context.Database.EnsureCreatedAsync();
-            logger.LogInformation("The database with context {ContextName} was ensured to be created",
-                typeof(TContext).Name);
+            switch (mode)
+            {
+                case UpdateMode.CreateThenUse:
+                    await context.Database.EnsureCreatedAsync();
+                    break;
+                case UpdateMode.MigrateThenUse:
+                    await context.Database.MigrateAsync();
+                    break;
+                case UpdateMode.RecreateThenUse:
+                    await context.Database.EnsureDeletedAsync();
+                    await context.Database.EnsureCreatedAsync();
+                    break;
+                default:
+                    throw new InvalidOperationException($"Unknown mode: {mode}");
+            }
 
-            if (EntryExtends.IsInUnitTests())
-            {
-                // Reset database for unit tests.
-                await context.Database.EnsureDeletedAsync();
-                await context.Database.EnsureCreatedAsync();
-            }
-            
-            if (context.Database.IsRelational() && !context.Database.IsInMemory())
-            {
-                await context.Database.MigrateAsync();
-            }
-            else
-            {
-                logger.LogInformation("Skip migrating data context {ContextName}. Is it relational: {Relational}. Is it in memory: {InMemory}",
-                    typeof(TContext).Name,
-                    context.Database.IsRelational(),
-                    context.Database.IsInMemory());
-            }
-            logger.LogInformation("Migrated database associated with context {ContextName}", typeof(TContext).Name);
+            logger.LogInformation("{Mode} database associated with context {ContextName}", mode, typeof(TContext).Name);
         }
         catch (Exception e)
         {

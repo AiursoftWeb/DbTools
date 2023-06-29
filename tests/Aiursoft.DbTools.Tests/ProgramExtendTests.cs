@@ -15,7 +15,7 @@ namespace Aiursoft.DbTools.Tests
                 services.AddAiurSqliteWithCache<MyDbContext>(@"DataSource=app.db;Cache=Shared")
             );
             var host = hostBuilder.Build();
-            _ = await host.UpdateDbAsync<MyDbContext>();
+            _ = await host.UpdateDbAsync<MyDbContext>(UpdateMode.RecreateThenUse);
         }
     }
 }
