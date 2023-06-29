@@ -15,6 +15,30 @@ To install `Aiursoft.DbTools` to your project from [nuget.org](https://www.nuget
 dotnet add package Aiursoft.DbTools
 ```
 
+## Usage
+
+Easier to register DbContext:
+
+SQLite
+
+```csharp
+var services = new ServiceCollection();
+services.AddAiurSqliteWithCache<MyDbContext>("Data Source=app.db");
+
+var built = services.BuildServiceProvider();
+var context = built.GetRequiredService<MyDbContext>();
+```
+
+SQL Server
+
+```csharp
+var services = new ServiceCollection();
+services.AddAiurSqlServerWithCache<MyDbContext>("Server=(localdb)\\mssqllocaldb;Database=DebugTrusted_Connection=True;MultipleActiveResultSets=true");
+
+var built = services.BuildServiceProvider();
+var context = built.GetRequiredService<MyDbContext>();
+```
+
 ## How to contribute
 
 There are many ways to contribute to the project: logging bugs, submitting pull requests, reporting issues, and creating suggestions.

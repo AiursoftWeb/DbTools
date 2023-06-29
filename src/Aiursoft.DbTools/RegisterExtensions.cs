@@ -6,7 +6,7 @@ namespace Aiursoft.DbTools;
 
 public static class RegisterExtensions
 {
-    public static IServiceCollection AddSqlServerDbContextWithCache<T>(
+    public static IServiceCollection AddAiurSqlServerWithCache<T>(
         this IServiceCollection services,
         string connectionString,
         bool allowCache = true)
@@ -14,32 +14,57 @@ public static class RegisterExtensions
     {
         services.AddDbContextPool<T>((serviceProvider, optionsBuilder) =>
             optionsBuilder
-                .UseSqlServer(connectionString)
+                .UseSqlServer(
+                    connectionString: connectionString,
+                    sqlServerOptionsAction: options =>
+                    {
+                        options.EnableRetryOnFailure();
+                        options.CommandTimeout(30);
+                    })
                 .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>()));
 
         services.AddEFSecondLevelCache(options =>
         {
-            options.UseMemoryCacheProvider().DisableLogging(true);
-            options.CacheAllQueries(CacheExpirationMode.Sliding, TimeSpan.FromMinutes(30));
+            if (allowCache)
+            {
+                options.UseMemoryCacheProvider().DisableLogging(true);
+                options.CacheAllQueries(CacheExpirationMode.Sliding, TimeSpan.FromMinutes(30));
+            }
         });
         return services;
     }
 
-    public static IServiceCollection AddSqliteDbContext<T>(
+    public static IServiceCollection AddAiurSqliteWithCache<T>(
         this IServiceCollection services,
-        string connectionString)
+        string connectionString,
+        bool allowCache = true)
         where T : DbContext
     {
-        return services.AddDbContext<T>(optionsBuilder =>
+        services.AddDbContextPool<T>((serviceProvider, optionsBuilder) =>
         {
             optionsBuilder
                 .UseSqlite(
                     connectionString: connectionString,
-                    sqliteOptionsAction: options => { options.CommandTimeout(30); });
+                    sqliteOptionsAction: options =>
+                    {
+                        options.CommandTimeout(30);
+                    })
+                .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>());
         });
+
+        services.AddEFSecondLevelCache(options =>
+        {
+            if (allowCache)
+            {
+                options.UseMemoryCacheProvider().DisableLogging(true);
+                options.CacheAllQueries(CacheExpirationMode.Sliding, TimeSpan.FromMinutes(30));
+            }
+        });
+
+        return services;
     }
 
-    public static IServiceCollection AddInMemoryDb<T>(
+    public static IServiceCollection AddAiurInMemoryDb<T>(
         this IServiceCollection services)
         where T : DbContext
     {

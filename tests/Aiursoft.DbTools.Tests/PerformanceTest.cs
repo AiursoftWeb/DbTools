@@ -42,13 +42,24 @@ public class PerformanceTest
         var db = built.GetRequiredService<PerformanceTestDb>();
         await TestDb(db);
     }
-    
+
+    [TestMethod]
+    public async Task TestSqliteModifiedPool()
+    {
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddAiurSqliteWithCache<PerformanceTestDb>(Sqlite);
+        var built = services.BuildServiceProvider();
+        var db = built.GetRequiredService<PerformanceTestDb>();
+        await TestDb(db);
+    }
+
     [TestMethod]
     public async Task TestMemoryDefaultContext()
     {
         var services = new ServiceCollection();
         services.AddLogging();
-        services.AddInMemoryDb<PerformanceTestDb>();
+        services.AddAiurInMemoryDb<PerformanceTestDb>();
         var built = services.BuildServiceProvider();
         var db = built.GetRequiredService<PerformanceTestDb>();
         await TestDb(db);
@@ -65,7 +76,11 @@ public class PerformanceTest
             {
                 await db.Database.EnsureDeletedAsync();
                 await db.Database.EnsureCreatedAsync();
-                await db.Database.MigrateAsync();
+
+                if (!db.Database.IsInMemory())
+                {
+                    await db.Database.MigrateAsync();
+                }
             }
             catch (Exception e)
             {
@@ -75,7 +90,7 @@ public class PerformanceTest
         
         await RunWithWatch(async () =>
         {
-            for (int i = 0; i < 3000; i++)
+            for (var i = 0; i < 3000; i++)
             {
                 db.Books.Add(new Book
                 {
@@ -87,7 +102,7 @@ public class PerformanceTest
 
         await RunWithWatch(async () =>
         {
-            for (int i = 0; i < 10000; i++)
+            for (var i = 0; i < 10000; i++)
             {
                 var results = await db.Books.ToListAsync();
                 _ = results.Count;
@@ -96,7 +111,7 @@ public class PerformanceTest
 
         await RunWithWatch(async () =>
         {
-            for (int i = 0; i < 1000; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 var results = await db.Books.Where(b => b.Name.Contains(i.ToString())).ToListAsync();
                 _ = results.Count;
@@ -105,7 +120,7 @@ public class PerformanceTest
         
         await RunWithWatch(async () =>
         {
-            for (int i = 0; i < 700; i++)
+            for (var i = 0; i < 700; i++)
             {
                 // Insert.
                 db.Books.Add(new Book
@@ -122,7 +137,7 @@ public class PerformanceTest
         
         await RunWithWatch(async () =>
         {
-            for (int i = 0; i < 500; i++)
+            for (var i = 0; i < 500; i++)
             {
                 // Insert.
                 db.Books.Remove(await db.Books.FirstAsync());

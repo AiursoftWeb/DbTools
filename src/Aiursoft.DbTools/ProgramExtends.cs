@@ -35,9 +35,17 @@ public static class ProgramExtends
                 await context.Database.EnsureDeletedAsync();
                 await context.Database.EnsureCreatedAsync();
             }
-            else
+            
+            if (context.Database.IsRelational() && !context.Database.IsInMemory())
             {
                 await context.Database.MigrateAsync();
+            }
+            else
+            {
+                logger.LogInformation("Skip migrating data context {ContextName}. Is it relational: {Relational}. Is it in memory: {InMemory}",
+                    typeof(TContext).Name,
+                    context.Database.IsRelational(),
+                    context.Database.IsInMemory());
             }
             logger.LogInformation("Migrated database associated with context {ContextName}", typeof(TContext).Name);
         }

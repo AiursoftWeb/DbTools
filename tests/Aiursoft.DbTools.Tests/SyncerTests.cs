@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aiursoft.DbTools.Tests
@@ -6,7 +7,7 @@ namespace Aiursoft.DbTools.Tests
     public class Book : ISynchronizable<Book>
     {
         public int Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public bool EqualsInDb(Book obj)
         {
@@ -24,18 +25,11 @@ namespace Aiursoft.DbTools.Tests
 
     public class MyDbContext : DbContext
     {
-        public MyDbContext()
-        {
-        }
-
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
         }
 
         public DbSet<Book> Books => Set<Book>();
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite($"Data Source=app.db");
     }
     
     [TestClass]
@@ -44,7 +38,12 @@ namespace Aiursoft.DbTools.Tests
         [TestMethod]
         public async Task TestSync()
         {
-            await using var context = new MyDbContext();
+            // Arrange
+            var services = new ServiceCollection();
+            services.AddLogging();
+            services.AddAiurSqliteWithCache<MyDbContext>("Data Source=app.db");
+            var built = services.BuildServiceProvider();
+            var context = built.GetRequiredService<MyDbContext>();
             var dbSet = context.Books;
 
             var collection = new List<Book>
