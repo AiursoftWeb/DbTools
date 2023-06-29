@@ -71,7 +71,7 @@ public static class RegisterExtensions
         return services.AddDbContext<T>(optionsBuilder =>
         {
             optionsBuilder
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString());
+                .UseInMemoryDatabase(databaseName: "in-memory");
         });
     }
 }
