@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<!--Build and code-->
 		<OutputType>Library</OutputType>
-		<Version>6.0.28</Version>
+		<Version>6.0.29</Version>
 		<TargetFramework>net6.0</TargetFramework>
 		<!--Best practice-->
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -24,7 +24,7 @@
 		<PackageReference Include="Aiursoft.CSTools" Version="6.0.24" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.19" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.19" />
+		
 	</ItemGroup>
 
 </Project>

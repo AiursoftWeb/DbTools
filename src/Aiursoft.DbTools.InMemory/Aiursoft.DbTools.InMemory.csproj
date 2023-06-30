@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--Build and code-->
+    <OutputType>Library</OutputType>
+    <Version>6.0.29</Version>
+    <TargetFramework>net6.0</TargetFramework>
+    <!--Best practice-->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!--Nuget-->
+    <Company>Aiursoft</Company>
+    <Product>DbTools</Product>
+    <Authors>anduin</Authors>
+    <Description>A tool for database.</Description>
+    <PackageTags>nuget dotnet csproj dependencies database</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://gitlab.aiursoft.cn/aiursoft/dbtools</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://gitlab.aiursoft.cn/aiursoft/dbtools</PackageProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.19" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aiursoft.DbTools\Aiursoft.DbTools.csproj" />
+  </ItemGroup>
+
+</Project>
