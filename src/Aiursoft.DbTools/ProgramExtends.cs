@@ -41,10 +41,9 @@ public static class ProgramExtends
         }
         
         logger.LogInformation(
-            "Updating database associated with context {ContextName}. Relational: {Relational}. In memory: {InMemory}. In UT: {UT}",
+            "Updating database associated with context {ContextName}. Is relational {Relational}. In UT: {UT}",
             typeof(TContext).Name,
             context.Database.IsRelational(),
-            context.Database.IsInMemory(),
             EntryExtends.IsInUnitTests());
 
         try

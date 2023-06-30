@@ -18,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Aiursoft.DbTools.InMemory\Aiursoft.DbTools.InMemory.csproj" />
+    <ProjectReference Include="..\..\src\Aiursoft.DbTools.Sqlite\Aiursoft.DbTools.Sqlite.csproj" />
     <ProjectReference Include="..\..\src\Aiursoft.DbTools\Aiursoft.DbTools.csproj" />
   </ItemGroup>
 

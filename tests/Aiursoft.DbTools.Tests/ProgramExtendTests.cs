@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Aiursoft.DbTools.Sqlite;
+using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aiursoft.DbTools.Tests
@@ -15,6 +16,8 @@ namespace Aiursoft.DbTools.Tests
                 services.AddAiurSqliteWithCache<MyDbContext>(@"DataSource=app.db;Cache=Shared")
             );
             var host = hostBuilder.Build();
+            _ = await host.UpdateDbAsync<MyDbContext>(UpdateMode.MigrateThenUse);
+            _ = await host.UpdateDbAsync<MyDbContext>(UpdateMode.CreateThenUse);
             _ = await host.UpdateDbAsync<MyDbContext>(UpdateMode.RecreateThenUse);
         }
     }

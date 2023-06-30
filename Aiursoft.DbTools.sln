@@ -7,6 +7,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aiursoft.DbTools", "src\Aiu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aiursoft.DbTools.Tests", "tests\Aiursoft.DbTools.Tests\Aiursoft.DbTools.Tests.csproj", "{6D33E7CF-7DA7-4131-85D0-10474182380D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{45C4B568-4608-4CB1-B8DA-30906CB0FCBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aiursoft.DbTools.MySql", "src\Aiursoft.DbTools.MySql\Aiursoft.DbTools.MySql.csproj", "{DBA4C472-FEA0-4897-8DA2-620D3D368C16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aiursoft.DbTools.Sqlite", "src\Aiursoft.DbTools.Sqlite\Aiursoft.DbTools.Sqlite.csproj", "{3002D1B3-57A6-45B9-ACB2-5951A101DCB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aiursoft.DbTools.SqlServer", "src\Aiursoft.DbTools.SqlServer\Aiursoft.DbTools.SqlServer.csproj", "{798A3A0F-7303-4D1D-A3CE-14FA188E94EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aiursoft.DbTools.InMemory", "src\Aiursoft.DbTools.InMemory\Aiursoft.DbTools.InMemory.csproj", "{2C7AB08A-B771-4193-B012-F6CAC88823A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +34,28 @@ Global
 		{6D33E7CF-7DA7-4131-85D0-10474182380D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D33E7CF-7DA7-4131-85D0-10474182380D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D33E7CF-7DA7-4131-85D0-10474182380D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBA4C472-FEA0-4897-8DA2-620D3D368C16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBA4C472-FEA0-4897-8DA2-620D3D368C16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBA4C472-FEA0-4897-8DA2-620D3D368C16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBA4C472-FEA0-4897-8DA2-620D3D368C16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3002D1B3-57A6-45B9-ACB2-5951A101DCB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3002D1B3-57A6-45B9-ACB2-5951A101DCB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3002D1B3-57A6-45B9-ACB2-5951A101DCB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3002D1B3-57A6-45B9-ACB2-5951A101DCB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{798A3A0F-7303-4D1D-A3CE-14FA188E94EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{798A3A0F-7303-4D1D-A3CE-14FA188E94EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{798A3A0F-7303-4D1D-A3CE-14FA188E94EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{798A3A0F-7303-4D1D-A3CE-14FA188E94EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C7AB08A-B771-4193-B012-F6CAC88823A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C7AB08A-B771-4193-B012-F6CAC88823A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C7AB08A-B771-4193-B012-F6CAC88823A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C7AB08A-B771-4193-B012-F6CAC88823A9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E541B806-5DCB-453A-BEF5-7B9D0BCD3DEF} = {45C4B568-4608-4CB1-B8DA-30906CB0FCBD}
+		{DBA4C472-FEA0-4897-8DA2-620D3D368C16} = {45C4B568-4608-4CB1-B8DA-30906CB0FCBD}
+		{3002D1B3-57A6-45B9-ACB2-5951A101DCB4} = {45C4B568-4608-4CB1-B8DA-30906CB0FCBD}
+		{798A3A0F-7303-4D1D-A3CE-14FA188E94EB} = {45C4B568-4608-4CB1-B8DA-30906CB0FCBD}
+		{2C7AB08A-B771-4193-B012-F6CAC88823A9} = {45C4B568-4608-4CB1-B8DA-30906CB0FCBD}
 	EndGlobalSection
 EndGlobal
