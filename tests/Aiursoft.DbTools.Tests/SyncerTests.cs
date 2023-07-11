@@ -26,7 +26,7 @@ namespace Aiursoft.DbTools.Tests
         }
         
         [InverseProperty(nameof(Chaptor.Context))]
-        public IEnumerable<Chaptor> Chaptors { get; set; }
+        public IEnumerable<Chaptor>? Chaptors { get; set; }
     }
 
     public class Chaptor
