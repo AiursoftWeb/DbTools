@@ -9,14 +9,19 @@ public static class RegisterExtensions
     public static IServiceCollection AddAiurMySqlWithCache<T>(
         this IServiceCollection services,
         string connectionString,
-        bool allowCache = true)
+        bool allowCache = true,
+        bool splitQuery = true)
         where T : DbContext
     {
         services.AddDbContext<T>((serviceProvider, optionsAction) => optionsAction
             .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
-                builder =>
+                options =>
                 {
-                    builder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(30), null);
+                    if (splitQuery)
+                    {
+                        options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                    }
+                    options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(30), null);
                 })
             .EnableDetailedErrors()
             .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>()));

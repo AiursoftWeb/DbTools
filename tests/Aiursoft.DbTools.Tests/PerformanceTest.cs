@@ -14,6 +14,7 @@ public class PerformanceTestDb : DbContext
     }
 
     public DbSet<Book> Books => Set<Book>();
+    public DbSet<Chaptor> Chaptors => Set<Chaptor>();
 }
 
 [TestClass]
@@ -55,6 +56,17 @@ public class PerformanceTest
         var db = built.GetRequiredService<PerformanceTestDb>();
         await TestDb(db);
     }
+    
+    [TestMethod]
+    public async Task TestSqliteModifiedPoolWithoutSplit()
+    {
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddAiurSqliteWithCache<PerformanceTestDb>(Sqlite, splitQuery: false);
+        var built = services.BuildServiceProvider();
+        var db = built.GetRequiredService<PerformanceTestDb>();
+        await TestDb(db);
+    }
 
     [TestMethod]
     public async Task TestMemoryDefaultContext()
@@ -92,13 +104,25 @@ public class PerformanceTest
         
         await RunWithWatch(async () =>
         {
-            for (var i = 0; i < 3000; i++)
+            for (var j = 0; j < 30; j++)
             {
-                db.Books.Add(new Book
+                var newBook = new Book
                 {
                     Name = Guid.NewGuid().ToString()
-                });
+                };
+                await db.Books.AddAsync(newBook);
                 await db.SaveChangesAsync();
+                
+                for (var i = 0; i < 100; i++)
+                {
+                    var newChaptor = new Chaptor
+                    {
+                        Name = Guid.NewGuid().ToString(),
+                        ContextId = newBook.Id
+                    };
+                    await db.Chaptors.AddAsync(newChaptor);
+                    await db.SaveChangesAsync();
+                }
             }
         }, "Database inserted 3000 items!");
 
@@ -106,33 +130,43 @@ public class PerformanceTest
         {
             for (var i = 0; i < 10000; i++)
             {
-                var results = await db.Books.ToListAsync();
+                var results = await db.Chaptors
+                    .Include(c => c.Context)
+                    .ToListAsync();
                 _ = results.Count;
             }
-        }, "Database tolisted 10000 times!");
+        }, "Database ToList 10000 times!");
 
         await RunWithWatch(async () =>
         {
-            for (var i = 0; i < 1000; i++)
+            for (var i = 0; i < 10000; i++)
             {
-                var results = await db.Books.Where(b => b.Name.Contains(i.ToString())).ToListAsync();
+                var results = await db.Chaptors.Where(b => b.Context.Name.Contains(i.ToString())).ToListAsync();
                 _ = results.Count;
             }
-        }, "Database queried with where condition 1000 times!");
+        }, "Database queried with where condition 10000 times!");
         
         await RunWithWatch(async () =>
         {
             for (var i = 0; i < 700; i++)
             {
                 // Insert.
-                db.Books.Add(new Book
+                var newBook = new Book
                 {
                     Name = Guid.NewGuid().ToString()
-                });
+                }; 
+                db.Books.Add(newBook);
+                await db.SaveChangesAsync();
+                var newChaptor = new Chaptor
+                {
+                    Name = Guid.NewGuid().ToString(),
+                    ContextId = newBook.Id
+                };
+                db.Chaptors.Add(newChaptor);
                 await db.SaveChangesAsync();
                 
                 // Then query
-                var results = await db.Books.Where(b => b.Name.Contains(i.ToString())).ToListAsync();
+                var results = await db.Chaptors.Where(b => b.Name.Contains(i.ToString())).ToListAsync();
                 _ = results.Count;
             }
         }, "Database inserted-then-queried with condition 700 times!");
@@ -142,7 +176,7 @@ public class PerformanceTest
             for (var i = 0; i < 500; i++)
             {
                 // Insert.
-                db.Books.Remove(await db.Books.FirstAsync());
+                db.Chaptors.Remove(await db.Chaptors.FirstAsync());
                 await db.SaveChangesAsync();
                 
                 // Then query

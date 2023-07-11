@@ -9,7 +9,8 @@ public static class RegisterExtensions
     public static IServiceCollection AddAiurSqlServerWithCache<T>(
         this IServiceCollection services,
         string connectionString,
-        bool allowCache = true)
+        bool allowCache = true,
+        bool splitQuery = true)
         where T : DbContext
     {
         services.AddDbContextPool<T>((serviceProvider, optionsBuilder) =>
@@ -18,6 +19,10 @@ public static class RegisterExtensions
                     connectionString: connectionString,
                     sqlServerOptionsAction: options =>
                     {
+                        if (splitQuery)
+                        {
+                            options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                        }
                         options.EnableRetryOnFailure();
                         options.CommandTimeout(30);
                     })
