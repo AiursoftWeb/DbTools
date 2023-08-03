@@ -46,6 +46,12 @@ public static class ProgramExtends
             context.Database.IsRelational(),
             EntryExtends.IsInUnitTests());
 
+        while (await context.Database.CanConnectAsync() == false)
+        {
+            logger.LogWarning("Database is not ready yet. Waiting for 1 second...");
+            await Task.Delay(1000);
+        }
+
         try
         {
             switch (mode)
