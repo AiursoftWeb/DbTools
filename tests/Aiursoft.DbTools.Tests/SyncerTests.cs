@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Aiursoft.DbTools.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aiursoft.DbTools.Tests
@@ -57,12 +58,14 @@ namespace Aiursoft.DbTools.Tests
         [TestMethod]
         public async Task TestSync()
         {
+            var hostBuilder = Host.CreateDefaultBuilder();
+            hostBuilder.ConfigureServices(services => 
+                services.AddAiurSqliteWithCache<MyDbContext>("Data Source=app.db")
+            );
+            var host = hostBuilder.Build();
+            await host.UpdateDbAsync<MyDbContext>(UpdateMode.CreateThenUse);
             // Arrange
-            var services = new ServiceCollection();
-            services.AddLogging();
-            services.AddAiurSqliteWithCache<MyDbContext>("Data Source=app.db");
-            var built = services.BuildServiceProvider();
-            var context = built.GetRequiredService<MyDbContext>();
+            var context = host.Services.GetRequiredService<MyDbContext>();
             var dbSet = context.Books;
 
             var collection = new List<Book>

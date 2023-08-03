@@ -40,17 +40,13 @@ public static class ProgramExtends
             return host;
         }
         
+        await WaitUntilCanConnect(context, logger);
+        
         logger.LogInformation(
             "Updating database associated with context {ContextName}. Is relational {Relational}. In UT: {UT}",
             typeof(TContext).Name,
             context.Database.IsRelational(),
             EntryExtends.IsInUnitTests());
-
-        while (await context.Database.CanConnectAsync() == false)
-        {
-            logger.LogWarning("Database is not ready yet. Waiting for 1 second...");
-            await Task.Delay(1000);
-        }
 
         try
         {
@@ -79,5 +75,29 @@ public static class ProgramExtends
         }
 
         return host;
+    }
+
+    public static async Task WaitUntilCanConnect(DbContext context, ILogger logger)
+    {
+        if (!(context.Database.ProviderName?.EndsWith("Sqlite") ?? false)) // Hack here. Sqlite is never "CanConnect".
+        {
+            for (var i = 0;; i++)
+            {
+                if (i > 10)
+                {
+                    throw new InvalidOperationException("Cannot connect to database after 10 retries.");
+                }
+                try
+                {
+                    await context.Database.CanConnectAsync();
+                    break;
+                }
+                catch (Exception e)
+                {
+                    logger.LogWarning(e, "Cannot connect to database. Retrying...");
+                    await Task.Delay(1000);
+                }
+            }
+        }
     }
 }
