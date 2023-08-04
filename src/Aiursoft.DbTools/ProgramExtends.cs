@@ -33,13 +33,13 @@ public static class ProgramExtends
         using var scope = host.Services.CreateScope();
         var services = scope.ServiceProvider;
         var logger = services.GetRequiredService<ILogger<TContext>>();
-        var context = services.GetRequiredService<TContext>();
         if (EntryExtends.IsInEntityFramework())
         {
             logger.LogWarning($"This programme was triggered by Entity framework. We should do nothing");
             return host;
         }
-        
+
+        var context = await services.GetRequiredServiceWithRetry<TContext>();
         logger.LogInformation(
             "Updating database associated with context {ContextName}. Is relational {Relational}. In UT: {UT}",
             typeof(TContext).Name,
@@ -79,5 +79,26 @@ public static class ProgramExtends
         }
 
         return host;
+    }
+
+    private static async Task<T> GetRequiredServiceWithRetry<T>(this IServiceProvider serviceProvider, int attempts = 5) where T : notnull
+    {
+        for (var i = 1; i <= attempts; i++)
+        {
+            try
+            {
+                var response = serviceProvider.GetRequiredService<T>();
+                return response;
+            }
+            catch
+            {
+                if (i >= attempts)
+                {
+                    throw;
+                }
+                await Task.Delay(i * 1000);
+            }
+        }
+        throw new InvalidOperationException("Code shall not reach here.");
     }
 }
