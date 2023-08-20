@@ -11,7 +11,7 @@ namespace Aiursoft.DbTools.Tests
     public class Book : ISynchronizable<Book>
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; init; } = string.Empty;
 
         public bool EqualsInDb(Book obj)
         {
@@ -26,15 +26,15 @@ namespace Aiursoft.DbTools.Tests
             };
         }
         
-        [InverseProperty(nameof(Chaptor.Context))]
-        public IEnumerable<Chaptor>? Chaptors { get; set; }
+        [InverseProperty(nameof(Chapter.Context))]
+        public IEnumerable<Chapter>? Chapters { get; set; }
     }
 
-    public class Chaptor
+    public class Chapter
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; init; } = string.Empty;
         
         public int ContextId { get; set; }
         [ForeignKey(nameof(ContextId))]
@@ -49,7 +49,8 @@ namespace Aiursoft.DbTools.Tests
 
         public DbSet<Book> Books => Set<Book>();
         
-        public DbSet<Chaptor> Chaptors => Set<Chaptor>();
+        // ReSharper disable once UnusedMember.Global
+        public DbSet<Chapter> Chapters => Set<Chapter>();
     }
     
     [TestClass]

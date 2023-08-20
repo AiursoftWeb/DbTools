@@ -14,7 +14,7 @@ public class PerformanceTestDb : DbContext
     }
 
     public DbSet<Book> Books => Set<Book>();
-    public DbSet<Chaptor> Chaptors => Set<Chaptor>();
+    public DbSet<Chapter> Chapters => Set<Chapter>();
 }
 
 [TestClass]
@@ -115,12 +115,12 @@ public class PerformanceTest
                 
                 for (var i = 0; i < 100; i++)
                 {
-                    var newChaptor = new Chaptor
+                    var newChapter = new Chapter
                     {
                         Name = Guid.NewGuid().ToString(),
                         ContextId = newBook.Id
                     };
-                    await db.Chaptors.AddAsync(newChaptor);
+                    await db.Chapters.AddAsync(newChapter);
                     await db.SaveChangesAsync();
                 }
             }
@@ -130,7 +130,7 @@ public class PerformanceTest
         {
             for (var i = 0; i < 10000; i++)
             {
-                var results = await db.Chaptors
+                var results = await db.Chapters
                     .Include(c => c.Context)
                     .ToListAsync();
                 _ = results.Count;
@@ -141,7 +141,8 @@ public class PerformanceTest
         {
             for (var i = 0; i < 10000; i++)
             {
-                var results = await db.Chaptors.Where(b => b.Context.Name.Contains(i.ToString())).ToListAsync();
+                var i1 = i;
+                var results = await db.Chapters.Where(b => b.Context!.Name.Contains(i1.ToString())).ToListAsync();
                 _ = results.Count;
             }
         }, "Database queried with where condition 10000 times!");
@@ -157,16 +158,17 @@ public class PerformanceTest
                 }; 
                 db.Books.Add(newBook);
                 await db.SaveChangesAsync();
-                var newChaptor = new Chaptor
+                var newChapter = new Chapter
                 {
                     Name = Guid.NewGuid().ToString(),
                     ContextId = newBook.Id
                 };
-                db.Chaptors.Add(newChaptor);
+                db.Chapters.Add(newChapter);
                 await db.SaveChangesAsync();
                 
                 // Then query
-                var results = await db.Chaptors.Where(b => b.Name.Contains(i.ToString())).ToListAsync();
+                var i1 = i;
+                var results = await db.Chapters.Where(b => b.Name.Contains(i1.ToString())).ToListAsync();
                 _ = results.Count;
             }
         }, "Database inserted-then-queried with condition 700 times!");
@@ -176,11 +178,12 @@ public class PerformanceTest
             for (var i = 0; i < 500; i++)
             {
                 // Insert.
-                db.Chaptors.Remove(await db.Chaptors.FirstAsync());
+                db.Chapters.Remove(await db.Chapters.FirstAsync());
                 await db.SaveChangesAsync();
                 
                 // Then query
-                var results = await db.Books.Where(b => b.Name.Contains(i.ToString())).ToListAsync();
+                var i1 = i;
+                var results = await db.Books.Where(b => b.Name.Contains(i1.ToString())).ToListAsync();
                 _ = results.Count;
             }
         }, "Database delete-then-queried with condition 500 times!");
