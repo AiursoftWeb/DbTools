@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>7.0.3</Version>
+    <Version>7.0.4</Version>
     <TargetFramework>net7.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools</AssemblyName>
     <RootNamespace>Aiursoft.DbTools</RootNamespace>
@@ -22,7 +22,7 @@
     <RepositoryUrl>https://gitlab.aiursoft.cn/aiursoft/dbtools</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Aiursoft.CSTools" Version="7.0.0" />
+    <PackageReference Include="Aiursoft.CSTools" Version="7.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.13" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
   </ItemGroup>
