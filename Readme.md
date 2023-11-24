@@ -4,7 +4,7 @@
 [![Pipeline stat](https://gitlab.aiursoft.cn/aiursoft/DbTools/badges/master/pipeline.svg)](https://gitlab.aiursoft.cn/aiursoft/DbTools/-/pipelines)
 [![Test Coverage](https://gitlab.aiursoft.cn/aiursoft/DbTools/badges/master/coverage.svg)](https://gitlab.aiursoft.cn/aiursoft/DbTools/-/pipelines)
 [![NuGet version (Aiursoft.CSTools)](https://img.shields.io/nuget/v/Aiursoft.DbTools.svg)](https://www.nuget.org/packages/Aiursoft.DbTools/)
-[![ManHours](https://manhours.aiursoft.cn/gitlab/gitlab.aiursoft.cn/aiursoft/dbtools.svg)](https://gitlab.aiursoft.cn/aiursoft/dbtools/-/commits/master?ref_type=heads)
+[![ManHours](https://manhours.aiursoft.cn/r/gitlab.aiursoft.cn/aiursoft/dbtools.svg)](https://gitlab.aiursoft.cn/aiursoft/dbtools/-/commits/master?ref_type=heads)
 
 DbTools are Aiursoft's common database tools. It contains a lot of useful database tools for developers.
 
