@@ -21,7 +21,10 @@ public static class RegisterExtensions
                     {
                         options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                     }
-                    options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(30), null);
+
+                    options.EnableRetryOnFailure();
+                    options.CommandTimeout(30);
+                    options.MigrationsAssembly(typeof(T).Assembly.FullName);
                 })
             .EnableDetailedErrors()
             .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>()));

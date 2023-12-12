@@ -25,6 +25,7 @@ public static class RegisterExtensions
                         }
                         options.EnableRetryOnFailure();
                         options.CommandTimeout(30);
+                        options.MigrationsAssembly(typeof(T).Assembly.FullName);
                     })
                 .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>()));
 

@@ -24,7 +24,9 @@ public static class RegisterExtensions
                         {
                             options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                         }
+                        // options.EnableRetryOnFailure();
                         options.CommandTimeout(30);
+                        options.MigrationsAssembly(typeof(T).Assembly.FullName);
                     })
                 .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>());
         });

@@ -99,9 +99,9 @@ public static class ProgramExtends
         throw new InvalidOperationException("Code shall not reach here.");
     }
 
-    public static async Task WaitUntilCanConnect(DbContext context, ILogger logger)
+    private static async Task WaitUntilCanConnect(DbContext context, ILogger logger)
     {
-        if (!(context.Database.ProviderName?.EndsWith("Sqlite") ?? false)) // Hack here. Sqlite is never "CanConnect".
+        if (!(context.Database.ProviderName?.EndsWith("Sqlite", StringComparison.OrdinalIgnoreCase) ?? false))
         {
             for (var i = 0;; i++)
             {
@@ -111,14 +111,18 @@ public static class ProgramExtends
                 }
                 try
                 {
-                    await context.Database.CanConnectAsync();
-                    break;
+                    var canConnect = await context.Database.CanConnectAsync();
+                    if (canConnect)
+                    {
+                        break;
+                    }
                 }
                 catch (Exception e)
                 {
                     logger.LogWarning(e, "Cannot connect to database. Retrying...");
-                    await Task.Delay(1000);
                 }
+                
+                await Task.Delay(i * 1000);
             }
         }
     }
