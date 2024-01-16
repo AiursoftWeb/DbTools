@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aiursoft.DbTools.InMemory;
+namespace Aiursoft.DbTools.MySql;
 
 public static class RegisterExtensions
 {
