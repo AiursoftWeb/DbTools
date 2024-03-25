@@ -89,6 +89,16 @@ var allowCache = configuration.GetSection("ConnectionStrings:AllowCache").Get<bo
 services.AddDatabase<MyDbContext>(connectionString, dbType, allowCache);
 ```
 
+> Tips
+
+If your database project is different with your web project, you may need the following command to generate migrations:
+
+```bash
+cd ./DatabaseProject
+dotnet ef migrations add MigrationName --context YourContext --output-dir Migrations --startup-project ../WebProject
+dotnet ef database update --context YourContext
+```
+
 ## How to contribute
 
 There are many ways to contribute to the project: logging bugs, submitting pull requests, reporting issues, and creating suggestions.
