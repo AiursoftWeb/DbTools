@@ -53,6 +53,42 @@ var host = hostBuilder.Build();
 await host.UpdateDbAsync<MyDbContext>(UpdateMode.CreateThenUse);
 ```
 
+## Switchable database
+
+Supports:
+
+* Sqlite
+* MySql
+* InMemory
+
+First, install the package:
+
+```bash
+dotnet add package Aiursoft.DbTools.Switchable
+```
+
+In your `appsettings.json`:
+
+```json
+{
+  // Database.
+  "ConnectionStrings": {
+    "AllowCache": "True",
+    "DbType": "Sqlite",
+    "DefaultConnection": "DataSource=app.db;Cache=Shared"
+  },
+}
+```
+
+In your `startup.cs`:
+
+```csharp
+var connectionString = configuration.GetConnectionString("DefaultConnection");
+var dbType = configuration.GetSection("ConnectionStrings:DbType").Get<DbType>();
+var allowCache = configuration.GetSection("ConnectionStrings:AllowCache").Get<bool>();
+services.AddDatabase<MyDbContext>(connectionString, dbType, allowCache);
+```
+
 ## How to contribute
 
 There are many ways to contribute to the project: logging bugs, submitting pull requests, reporting issues, and creating suggestions.

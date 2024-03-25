@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
             Console.WriteLine("Unit test detected, using in-memory database.");
             dbType = DbType.InMemory;
         }
-        
+
         switch (dbType)
         {
             case DbType.InMemory:
@@ -34,6 +34,8 @@ public static class ServiceCollectionExtensions
             default:
                 throw new NotSupportedException($"Database type {dbType} is not supported!");
         }
+
+        Console.WriteLine($"Using database type: {dbType}. Allow cache: {allowCache}.");
 
         return services;
     }
