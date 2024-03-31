@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>8.0.5</Version>
+    <Version>8.0.6</Version>
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools.Sqlite</AssemblyName>
     <RootNamespace>Aiursoft.DbTools.Sqlite</RootNamespace>
@@ -24,7 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
-    <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="4.3.0" />
+    <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="4.3.1" />
     <None Include="../../Readme.md" Pack="true" PackagePath="." />
   </ItemGroup>
   <ItemGroup>
