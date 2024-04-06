@@ -33,7 +33,7 @@ public static class RegisterExtensions
         {
             if (allowCache)
             {
-                options.UseMemoryCacheProvider().DisableLogging(true);
+                options.UseMemoryCacheProvider().ConfigureLogging(enable: false);
                 options.CacheAllQueries(CacheExpirationMode.Sliding, TimeSpan.FromMinutes(30));
             }
         });
