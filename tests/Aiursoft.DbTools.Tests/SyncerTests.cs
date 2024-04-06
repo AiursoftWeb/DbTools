@@ -66,7 +66,7 @@ namespace Aiursoft.DbTools.Tests
             var host = hostBuilder.Build();
             await host.UpdateDbAsync<MyDbContext>(UpdateMode.CreateThenUse);
             // Arrange
-            var context = host.Services.GetRequiredService<MyDbContext>();
+            var context = host.Services.CreateScope().ServiceProvider.GetRequiredService<MyDbContext>();
             var dbSet = context.Books;
 
             var collection = new List<Book>
