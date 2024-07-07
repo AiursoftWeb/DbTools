@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>8.0.7</Version>
+    <Version>8.0.8</Version>
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools</AssemblyName>
     <RootNamespace>Aiursoft.DbTools</RootNamespace>
@@ -23,7 +23,7 @@
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Aiursoft.CSTools" Version="8.0.3" />
+    <PackageReference Include="Aiursoft.CSTools" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.6" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <None Include="../../Readme.md" Pack="true" PackagePath="." />
