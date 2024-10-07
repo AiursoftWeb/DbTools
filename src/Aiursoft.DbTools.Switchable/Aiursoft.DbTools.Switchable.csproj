@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>8.0.17</Version>
+    <Version>8.0.18</Version>
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools.Switchable</AssemblyName>
     <RootNamespace>Aiursoft.DbTools.Switchable</RootNamespace>
@@ -15,6 +15,10 @@
     <Description>Nuget package of 'Switchable' provided by Aiursoft</Description>
     <PackageId>Aiursoft.DbTools.Switchable</PackageId>
     <PackageTags>nuget package dotnet csproj dependencies</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://gitlab.aiursoft.cn/aiursoft/dbtools</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://gitlab.aiursoft.cn/aiursoft/dbtools.git</RepositoryUrl>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
