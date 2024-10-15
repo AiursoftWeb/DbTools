@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Aiursoft.DbTools.InMemory;
@@ -12,7 +13,8 @@ public static class RegisterExtensions
         return services.AddDbContext<T>(optionsBuilder =>
         {
             optionsBuilder
-                .UseInMemoryDatabase(databaseName: "in-memory");
+                .UseInMemoryDatabase(databaseName: "in-memory")
+                .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
         });
     }
 }
