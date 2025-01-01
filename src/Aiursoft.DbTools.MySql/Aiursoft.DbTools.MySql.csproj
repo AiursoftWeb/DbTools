@@ -23,7 +23,7 @@
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.2.efcore.9.0.0" />
     <PackageReference Include="EFCoreSecondLevelCacheInterceptor" Version="4.9.0" />
     <None Include="../../Readme.md" Pack="true" PackagePath="." />
   </ItemGroup>
