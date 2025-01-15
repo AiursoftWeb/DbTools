@@ -36,6 +36,7 @@ public static class RegisterExtensions
             {
                 options.UseMemoryCacheProvider().ConfigureLogging(enable: false);
                 options.CacheAllQueries(CacheExpirationMode.Sliding, TimeSpan.FromMinutes(30));
+                options.UseDbCallsIfCachingProviderIsDown(TimeSpan.FromMinutes(1));
             });
         }
 
