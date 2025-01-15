@@ -15,7 +15,7 @@ public static class RegisterExtensions
     {
         services.AddDbContextPool<T>((serviceProvider, optionsBuilder) =>
         {
-            optionsBuilder
+            var builder = optionsBuilder
                 .UseSqlite(
                     connectionString: connectionString,
                     sqliteOptionsAction: options =>
@@ -28,8 +28,12 @@ public static class RegisterExtensions
                         // options.EnableRetryOnFailure();
                         options.CommandTimeout(30);
                         options.MigrationsAssembly(typeof(T).Assembly.FullName);
-                    })
-                .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>());
+                    });
+
+            if (allowCache)
+            {
+                builder.AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>());
+            }
         });
 
         if (allowCache)

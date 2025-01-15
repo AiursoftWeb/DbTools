@@ -13,21 +13,28 @@ public static class RegisterExtensions
         bool splitQuery = true)
         where T : DbContext
     {
-        services.AddDbContext<T>((serviceProvider, optionsAction) => optionsAction
-            .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
-                options =>
-                {
-                    if (splitQuery)
+        services.AddDbContext<T>((serviceProvider, optionsAction) =>
+        {
+            var builder = optionsAction
+                .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+                    options =>
                     {
-                        options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                    }
+                        if (splitQuery)
+                        {
+                            options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                        }
 
-                    options.EnableRetryOnFailure();
-                    options.CommandTimeout(30);
-                    options.MigrationsAssembly(typeof(T).Assembly.FullName);
-                })
-            .EnableDetailedErrors()
-            .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>()));
+                        options.EnableRetryOnFailure();
+                        options.CommandTimeout(30);
+                        options.MigrationsAssembly(typeof(T).Assembly.FullName);
+                    })
+                .EnableDetailedErrors();
+            
+            if (allowCache)
+            {
+                builder.AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>());
+            }
+        });
 
         if (allowCache)
         {

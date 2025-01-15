@@ -14,21 +14,26 @@ public static class RegisterExtensions
         where T : DbContext
     {
         services.AddDbContextPool<T>((serviceProvider, optionsBuilder) =>
-            optionsBuilder
-                .UseSqlServer(
-                    connectionString: connectionString,
-                    sqlServerOptionsAction: options =>
+        {
+            var builder = optionsBuilder.UseSqlServer(
+                connectionString: connectionString,
+                sqlServerOptionsAction: options =>
+                {
+                    if (splitQuery)
                     {
-                        if (splitQuery)
-                        {
-                            options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-                        }
+                        options.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+                    }
 
-                        options.EnableRetryOnFailure();
-                        options.CommandTimeout(30);
-                        options.MigrationsAssembly(typeof(T).Assembly.FullName);
-                    })
-                .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>()));
+                    options.EnableRetryOnFailure();
+                    options.CommandTimeout(30);
+                    options.MigrationsAssembly(typeof(T).Assembly.FullName);
+                });
+
+            if (allowCache)
+            {
+                builder.AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>());
+            }
+        });
 
         if (allowCache)
         {
