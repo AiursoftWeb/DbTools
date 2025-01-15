@@ -28,15 +28,15 @@ public static class RegisterExtensions
                 })
             .EnableDetailedErrors()
             .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>()));
-        
-        services.AddEFSecondLevelCache(options =>
+
+        if (allowCache)
         {
-            if (allowCache)
+            services.AddEFSecondLevelCache(options =>
             {
                 options.UseMemoryCacheProvider().ConfigureLogging(enable: false);
                 options.CacheAllQueries(CacheExpirationMode.Sliding, TimeSpan.FromMinutes(30));
-            }
-        });
+            });
+        }
 
         return services;
     }
