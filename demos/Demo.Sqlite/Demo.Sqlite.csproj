@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>Demo.Sqlite</AssemblyName>
+    <RootNamespace>Demo.Sqlite</RootNamespace>
+    <IsTestProject>false</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Aiursoft.DbTools.Sqlite\Aiursoft.DbTools.Sqlite.csproj" />
+    <ProjectReference Include="..\Demo.Entities\Demo.Entities.csproj" />
+  </ItemGroup>
+</Project>

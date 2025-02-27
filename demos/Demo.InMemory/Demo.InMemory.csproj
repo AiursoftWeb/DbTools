@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>Demo.InMemory</AssemblyName>
+    <RootNamespace>Demo.InMemory</RootNamespace>
+    <IsTestProject>false</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Aiursoft.DbTools.InMemory\Aiursoft.DbTools.InMemory.csproj" />
+    <ProjectReference Include="..\Demo.Entities\Demo.Entities.csproj" />
+  </ItemGroup>
+</Project>
