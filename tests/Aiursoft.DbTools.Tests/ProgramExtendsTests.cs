@@ -12,12 +12,11 @@ namespace Aiursoft.DbTools.Tests
         {
             // Arrange
             var hostBuilder = Host.CreateDefaultBuilder();
-            hostBuilder.ConfigureServices(services => 
+            hostBuilder.ConfigureServices(services =>
                 services.AddAiurSqliteWithCache<MyDbContext>(@"DataSource=app.db;Cache=Shared")
             );
             var host = hostBuilder.Build();
-            _ = await host.UpdateDbAsync<MyDbContext>(UpdateMode.CreateThenUse);
-            _ = await host.UpdateDbAsync<MyDbContext>(UpdateMode.RecreateThenUse);
+            _ = await host.UpdateDbAsync<MyDbContext>();
         }
     }
 }

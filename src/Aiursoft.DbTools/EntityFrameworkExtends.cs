@@ -3,12 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Aiursoft.DbTools;
 
-public interface ISynchronizable<T>
-{
-    bool EqualsInDb(T obj);
-    T Map();
-}
-
 public static class EntityFrameworkExtends
 {
     private static IEnumerable<M> DistinctBySync<T, M>(this IEnumerable<M> query) where M : ISynchronizable<T>

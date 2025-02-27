@@ -1,42 +1,39 @@
 ﻿using Aiursoft.CSTools.Tools;
-using Aiursoft.DbTools.InMemory;
-using Aiursoft.DbTools.MySql;
-using Aiursoft.DbTools.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Aiursoft.DbTools.Switchable;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddDatabase<Context>(this IServiceCollection services, 
-        string connectionString, 
-        DbType dbType,
-        bool allowCache) where Context : DbContext
+    public static IServiceCollection AddSwitchableRelationalDatabase<TAbstractContext>(
+        this IServiceCollection services,
+        string dbType,
+        string connectionString,
+        List<SupportedDatabaseType<TAbstractContext>> supportedDbs) where TAbstractContext : DbContext
     {
-        if (EntryExtends.IsInUnitTests())
+        var supportedDb = supportedDbs.SingleOrDefault(x => string.Equals(x.DbType, dbType, StringComparison.OrdinalIgnoreCase));
+        if (supportedDb == null)
         {
-            Console.WriteLine("Unit test detected, using in-memory database.");
-            dbType = DbType.InMemory;
+            var supportedTypes = string.Join(", ", supportedDbs.SelectMany(t => t.DbType));
+            throw new NotSupportedException(
+                $"Database type {dbType} is not supported! Supported database types: {supportedTypes}");
         }
 
-        switch (dbType)
-        {
-            case DbType.InMemory:
-                services.AddAiurInMemoryDb<Context>();
-                break;
-            case DbType.Sqlite:
-                services.AddAiurSqliteWithCache<Context>(connectionString, allowCache);
-                break;
-            case DbType.MySql:
-                services.AddAiurMySqlWithCache<Context>(connectionString, allowCache);
-                break;
-            default:
-                throw new NotSupportedException($"Database type {dbType} is not supported!");
-        }
+        Console.WriteLine($"Using database type: {supportedDb.DbType}. Connection string: {connectionString.SafeSubstring(20)}");
+        var builtServices = supportedDb.RegisterFunction(services, connectionString);
+        services.AddScoped<TAbstractContext>(t => supportedDb.ContextResolver(t));
+        return builtServices;
+    }
 
-        Console.WriteLine($"Using database type: {dbType}. Allow cache: {allowCache}.");
+    public static (string connectionString, string dbType, bool allowCacheLayer) GetDbSettings(
+        this IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("DefaultConnection")!;
+        var dbType = configuration.GetSection("ConnectionStrings:DbType").Get<string>()!;
+        var allowCache = configuration.GetSection("ConnectionStrings:AllowCache").Get<bool>();
 
-        return services;
+        return (connectionString, dbType, allowCache);
     }
 }

@@ -7,21 +7,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aiursoft.DbTools.Tests;
 
-public class PerformanceTestDb : DbContext
-{
-    public PerformanceTestDb(DbContextOptions<PerformanceTestDb> options) : base(options)
-    {
-    }
-
-    public DbSet<Book> Books => Set<Book>();
-    public DbSet<Chapter> Chapters => Set<Chapter>();
-}
-
 [TestClass]
 public class PerformanceTest
 {
     private const string Sqlite = "DataSource=app.db;Cache=Shared";
-    
+
     [TestMethod]
     public async Task TestSqliteDefaultPool()
     {
@@ -33,7 +23,7 @@ public class PerformanceTest
         var db = built.GetRequiredService<PerformanceTestDb>();
         await TestDb(db);
     }
-    
+
     [TestMethod]
     public async Task TestSqliteDefaultContext()
     {
@@ -56,7 +46,7 @@ public class PerformanceTest
         var db = built.GetRequiredService<PerformanceTestDb>();
         await TestDb(db);
     }
-    
+
     [TestMethod]
     public async Task TestSqliteModifiedPoolWithoutSplit()
     {
@@ -101,7 +91,7 @@ public class PerformanceTest
                 Console.WriteLine(e);
             }
         }, "Database created!");
-        
+
         await RunWithWatch(async () =>
         {
             for (var j = 0; j < 30; j++)
@@ -112,7 +102,7 @@ public class PerformanceTest
                 };
                 await db.Books.AddAsync(newBook);
                 await db.SaveChangesAsync();
-                
+
                 for (var i = 0; i < 100; i++)
                 {
                     var newChapter = new Chapter
@@ -146,7 +136,7 @@ public class PerformanceTest
                 _ = results.Count;
             }
         }, "Database queried with where condition 10000 times!");
-        
+
         await RunWithWatch(async () =>
         {
             for (var i = 0; i < 700; i++)
@@ -155,7 +145,7 @@ public class PerformanceTest
                 var newBook = new Book
                 {
                     Name = Guid.NewGuid().ToString()
-                }; 
+                };
                 db.Books.Add(newBook);
                 await db.SaveChangesAsync();
                 var newChapter = new Chapter
@@ -165,14 +155,14 @@ public class PerformanceTest
                 };
                 db.Chapters.Add(newChapter);
                 await db.SaveChangesAsync();
-                
+
                 // Then query
                 var i1 = i;
                 var results = await db.Chapters.Where(b => b.Name.Contains(i1.ToString())).ToListAsync();
                 _ = results.Count;
             }
         }, "Database inserted-then-queried with condition 700 times!");
-        
+
         await RunWithWatch(async () =>
         {
             for (var i = 0; i < 500; i++)
@@ -180,7 +170,7 @@ public class PerformanceTest
                 // Insert.
                 db.Chapters.Remove(await db.Chapters.FirstAsync());
                 await db.SaveChangesAsync();
-                
+
                 // Then query
                 var i1 = i;
                 var results = await db.Books.Where(b => b.Name.Contains(i1.ToString())).ToListAsync();
@@ -190,7 +180,7 @@ public class PerformanceTest
 
         totalWatch.Stop();
         Console.WriteLine(totalWatch.Elapsed + " Totally elapsed!");
-        
+
         await db.Database.EnsureDeletedAsync();
     }
 

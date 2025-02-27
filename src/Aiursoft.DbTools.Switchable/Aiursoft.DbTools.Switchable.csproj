@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>9.0.9</Version>
+    <Version>9.0.10</Version>
     <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools.Switchable</AssemblyName>
     <RootNamespace>Aiursoft.DbTools.Switchable</RootNamespace>
@@ -22,9 +22,9 @@
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Aiursoft.DbTools.InMemory\Aiursoft.DbTools.InMemory.csproj" />
-    <ProjectReference Include="..\Aiursoft.DbTools.MySql\Aiursoft.DbTools.MySql.csproj" />
-    <ProjectReference Include="..\Aiursoft.DbTools.Sqlite\Aiursoft.DbTools.Sqlite.csproj" />
     <None Include="..\..\Readme.md" Pack="true" PackagePath="." />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Aiursoft.DbTools\Aiursoft.DbTools.csproj" />
   </ItemGroup>
 </Project>
