@@ -6,7 +6,7 @@
 [![NuGet version (Aiursoft.CSTools)](https://img.shields.io/nuget/v/Aiursoft.DbTools.svg)](https://www.nuget.org/packages/Aiursoft.DbTools/)
 [![ManHours](https://manhours.aiursoft.cn/r/gitlab.aiursoft.cn/aiursoft/dbtools.svg)](https://gitlab.aiursoft.cn/aiursoft/dbtools/-/commits/master?ref_type=heads)
 
-DbTools are Aiursoft's common database tools. It contains a lot of useful database tools for developers.
+DbTools are Aiursoft's common database tools. It simplifies the process of registering DbContext and updating database. So your application can easily switch from different database types.
 
 ## Installation
 
@@ -16,88 +16,108 @@ To install `Aiursoft.DbTools` to your project from [nuget.org](https://www.nuget
 dotnet add package Aiursoft.DbTools
 ```
 
+## Project structure
+
+```mermaid
+---
+title: Project dependency diagram
+---
+
+stateDiagram-v2
+    Aiursoft.DbTools.InMemory --> Aiursoft.DbTools
+    Aiursoft.DbTools.Sqlite --> Aiursoft.DbTools
+    Aiursoft.DbTools.MySql --> Aiursoft.DbTools
+    Aiursoft.DbTools.Switchable --> Aiursoft.DbTools
+    Demo.Entities --> Aiursoft.DbTools
+    Demo.Sqlite --> Aiursoft.DbTools.Sqlite
+    Demo.Sqlite --> Demo.Entities
+    Demo.MySql --> Aiursoft.DbTools.MySql
+    Demo.MySql --> Demo.Entities
+    Demo.InMemory --> Aiursoft.DbTools.InMemory
+    Demo.InMemory --> Demo.Entities
+    Demo.WebApp --> Aiursoft.DbTools.Switchable
+    Demo.WebApp --> Demo.InMemory
+    Demo.WebApp --> Demo.MySql
+    Demo.WebApp --> Demo.Sqlite
+    Aiursoft.DbTools.SqlServer --> Aiursoft.DbTools
+```
+
 ## Usage
 
-Easier to register DbContext:
-
-SQLite
+In your `startup.cs`:
 
 ```csharp
-var services = new ServiceCollection();
-services.AddAiurSqliteWithCache<MyDbContext>("Data Source=app.db");
+public void ConfigureServices(IConfiguration configuration, IWebHostEnvironment environment, IServiceCollection services)
+{
+    var (connectionString, dbType, allowCache) = configuration.GetDbSettings();
+    services.AddSwitchableRelationalDatabase(
+        dbType: EntryExtends.IsInUnitTests() ? "InMemory": dbType,
+        connectionString: connectionString,
+        supportedDbs:
+        [
+            new MySqlSupportedDb(allowCache: allowCache, splitQuery: false),
+            new SqliteSupportedDb(allowCache: allowCache, splitQuery: true),
+            new InMemorySupportedDb()
+        ]);
 
-var built = services.BuildServiceProvider();
-var context = built.GetRequiredService<MyDbContext>();
-```
-
-SQL Server
-
-```csharp
-var services = new ServiceCollection();
-services.AddAiurSqlServerWithCache<MyDbContext>("Server=(localdb)\\mssqllocaldb;Database=DebugTrusted_Connection=True;MultipleActiveResultSets=true");
-
-var built = services.BuildServiceProvider();
-var context = built.GetRequiredService<MyDbContext>();
-```
-
-Easier to update database:
-
-```csharp
-var hostBuilder = Host.CreateDefaultBuilder();
-hostBuilder.ConfigureServices(services => 
-    services.AddAiurSqliteWithCache<MyDbContext>(@"DataSource=app.db;Cache=Shared")
-);
-var host = hostBuilder.Build();
-
-// Now update:
-await host.UpdateDbAsync<MyDbContext>(UpdateMode.CreateThenUse);
-```
-
-## Switchable database
-
-Supports:
-
-* Sqlite
-* MySql
-* InMemory
-
-First, install the package:
-
-```bash
-dotnet add package Aiursoft.DbTools.Switchable
+    services
+        .AddControllersWithViews()
+        .AddApplicationPart(typeof(Startup).Assembly);
+}
 ```
 
 In your `appsettings.json`:
 
 ```json
 {
-  // Database.
+    "ConnectionStrings": {
+        "AllowCache": "True",
+        "DbType": "Sqlite",
+        "DefaultConnection": "DataSource=app.db;Cache=Shared"
+    }
+}
+
+```
+
+Or:
+
+```json
+{
+  // sudo docker run -d --name db -e MYSQL_RANDOM_ROOT_PASSWORD=true -e MYSQL_DATABASE=kahla -e MYSQL_USER=kahla -e MYSQL_PASSWORD=kahla_password -p 3306:3306 hub.aiursoft.cn/mysql
   "ConnectionStrings": {
     "AllowCache": "True",
-    "DbType": "Sqlite",
-    "DefaultConnection": "DataSource=app.db;Cache=Shared"
-  },
+    "DbType": "MySql",
+    "DefaultConnection": "Server=localhost;Database=kahla;Uid=kahla;Pwd=kahla_password;"
+  }
 }
 ```
 
-In your `startup.cs`:
+Or:
 
-```csharp
-var connectionString = configuration.GetConnectionString("DefaultConnection");
-var dbType = configuration.GetSection("ConnectionStrings:DbType").Get<DbType>();
-var allowCache = configuration.GetSection("ConnectionStrings:AllowCache").Get<bool>();
-services.AddDatabase<MyDbContext>(connectionString, dbType, allowCache);
+```json
+{
+  "ConnectionStrings": {
+    "AllowCache": "False",
+    "DbType": "InMemory"
+  }
+}
 ```
 
-> Tips
+Simple, isn't it?
 
-If your database project is different with your web project, you may need the following command to generate migrations:
+Your database project need to be different with your web project, you need the following command to generate migrations:
 
 ```bash
-cd ./DatabaseProject
-dotnet ef migrations add MigrationName --context YourContext --output-dir Migrations --startup-project ../WebProject
-dotnet ef database update --context YourContext
+cd ./Demo.MySql
+dotnet ef migrations add Init --context "MySqlContext" -s ../Demo.WebApp/Demo.WebApp.csproj
+cd ..
+
+cd ./Demo.Sqlite
+dotnet ef migrations add Init --context "SqliteContext" -s ../Demo.WebApp/Demo.WebApp.csproj
+cd ..
 ```
+
+For more usage, please check the `Demo` app in the `demos` folder!
 
 ## How to contribute
 
