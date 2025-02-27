@@ -8,18 +8,30 @@ public class HomeController(DemoDbContext context) : Controller
 {
     public async Task<IActionResult> Index()
     {
-        context.Authors.Add(new Author
+        var newAuthor = new Author
         {
             Name = "Anduin",
             IsDied = false,
-        });
+        };
+        context.Authors.Add(newAuthor);
         await context.SaveChangesAsync();
 
-        var totalItems = await context.Authors.CountAsync();
+        var totalAuthors = await context.Authors.CountAsync();
+        var newBook = new Book
+        {
+            AuthorId = newAuthor.Id,
+            Title = "My Book"
+        };
+        context.Books.Add(newBook);
+        await context.SaveChangesAsync();
+
+        var totalBooks = await context.Books.CountAsync();
+
         return this.Ok(new
         {
             message = "Item Inserted!",
-            totalItems
+            totalAuthors,
+            totalBooks
         });
     }
 }
