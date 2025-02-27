@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
         var supportedDb = supportedDbs.SingleOrDefault(x => string.Equals(x.DbType, dbType, StringComparison.OrdinalIgnoreCase));
         if (supportedDb == null)
         {
-            var supportedTypes = string.Join(", ", supportedDbs.SelectMany(t => t.DbType));
+            var supportedTypes = string.Join(", ", supportedDbs.Select(x => x.DbType));
             throw new NotSupportedException(
                 $"Database type {dbType} is not supported! Supported database types: {supportedTypes}");
         }
