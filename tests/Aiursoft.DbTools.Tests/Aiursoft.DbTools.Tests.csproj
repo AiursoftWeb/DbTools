@@ -20,7 +20,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\demos\Demo.WebApp\Demo.WebApp.csproj" />
-    <ProjectReference Include="..\..\src\Aiursoft.DbTools.InMemory\Aiursoft.DbTools.InMemory.csproj" />
-    <ProjectReference Include="..\..\src\Aiursoft.DbTools.Sqlite\Aiursoft.DbTools.Sqlite.csproj" />
   </ItemGroup>
 </Project>
