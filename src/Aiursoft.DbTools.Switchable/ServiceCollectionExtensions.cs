@@ -34,6 +34,7 @@ public static class ServiceCollectionExtensions
         var dbType = configuration.GetSection("ConnectionStrings:DbType").Get<string>()!;
         var allowCache = configuration.GetSection("ConnectionStrings:AllowCache").Get<bool>();
 
+        Console.WriteLine($"Fetched database type: {dbType}. Connection string: {connectionString.SafeSubstring(20)}");
         return (connectionString, dbType, allowCache);
     }
 }
