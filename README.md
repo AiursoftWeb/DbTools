@@ -6,17 +6,25 @@
 [![NuGet version (Aiursoft.CSTools)](https://img.shields.io/nuget/v/Aiursoft.DbTools.svg)](https://www.nuget.org/packages/Aiursoft.DbTools/)
 [![ManHours](https://manhours.aiursoft.cn/r/gitlab.aiursoft.cn/aiursoft/dbtools.svg)](https://gitlab.aiursoft.cn/aiursoft/dbtools/-/commits/master?ref_type=heads)
 
-DbTools are Aiursoft's common database tools. It simplifies the process of registering DbContext and updating database. So your application can easily switch from different database types.
+DbTools are Aiursoft's common database tools. It simplifies the process of registering DbContext and updating database. So your application can easily switch from different database types without editing the code.
 
-## Installation
+## How to install
 
-To install `Aiursoft.DbTools` to your project from [nuget.org](https://www.nuget.org/packages/Aiursoft.DbTools/):
+Run the following command to install `Aiursoft.DbTools.Switchable` to your ASP.NET Core project from [nuget.org](https://www.nuget.org/packages/Aiursoft.DbTools.Switchable/):
 
 ```bash
-dotnet add package Aiursoft.DbTools
+dotnet add package Aiursoft.DbTools.Switchable
 ```
 
-## Project structure
+Run the following command to install `Aiursoft.DbTools.InMemory` to your database implementation project from [nuget.org](https://www.nuget.org/packages/Aiursoft.DbTools.InMemory/):
+
+```bash
+dotnet add package Aiursoft.DbTools.InMemory
+```
+
+All database implementation projects must reference a single `AbstractDb` project. And you need to define and use the abstract class `YourDbContext` in it.
+
+Make sure your project dependency is as follows:
 
 ```mermaid
 ---
@@ -47,6 +55,7 @@ stateDiagram-v2
 In your `startup.cs`:
 
 ```csharp
+// In your Web project
 public void ConfigureServices(IConfiguration configuration, IWebHostEnvironment environment, IServiceCollection services)
 {
     var (connectionString, dbType, allowCache) = configuration.GetDbSettings();
@@ -55,6 +64,7 @@ public void ConfigureServices(IConfiguration configuration, IWebHostEnvironment 
         connectionString: connectionString,
         supportedDbs:
         [
+            // These comes from your database implementation projects.
             new MySqlSupportedDb(allowCache: allowCache, splitQuery: false),
             new SqliteSupportedDb(allowCache: allowCache, splitQuery: true),
             new InMemorySupportedDb()
