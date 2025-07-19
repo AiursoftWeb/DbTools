@@ -93,7 +93,7 @@ Or:
 
 ```json
 {
-  // sudo docker run -d --name db -e MYSQL_RANDOM_ROOT_PASSWORD=true -e MYSQL_DATABASE=kahla -e MYSQL_USER=kahla -e MYSQL_PASSWORD=kahla_password -p 3306:3306 hub.aiursoft.cn/mysql
+  // sudo docker run -d --name db -e MYSQL_RANDOM_ROOT_PASSWORD=true -e MYSQL_DATABASE=kahla -e MYSQL_USER=kahla -e MYSQL_PASSWORD=kahla_password -p 3306:3306 mysql
   "ConnectionStrings": {
     "AllowCache": "True",
     "DbType": "MySql",
