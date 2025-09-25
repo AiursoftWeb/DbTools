@@ -21,6 +21,10 @@ public abstract class Program
         // cd ./Demo.Sqlite
         // dotnet ef migrations add Init --context "SqliteContext" -s ../Demo.WebApp/Demo.WebApp.csproj
         // cd ..
+
+        // cd ./Demo.PostgreSql
+        // dotnet ef migrations add Init --context "PostgreSqlContext" -s ../Demo.WebApp/Demo.WebApp.csproj
+        // cd ..
         await app.UpdateDbAsync<DemoDbContext>();
         await app.RunAsync();
     }

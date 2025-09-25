@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Aiursoft.DbTools.Switchable\Aiursoft.DbTools.Switchable.csproj" />
     <ProjectReference Include="..\Demo.InMemory\Demo.InMemory.csproj" />
+    <ProjectReference Include="..\Demo.PostgreSql\Demo.PostgreSql.csproj" />
     <ProjectReference Include="..\Demo.MySql\Demo.MySql.csproj" />
     <ProjectReference Include="..\Demo.Sqlite\Demo.Sqlite.csproj" />
   </ItemGroup>
