@@ -35,18 +35,22 @@ stateDiagram-v2
     Aiursoft.DbTools.InMemory --> Aiursoft.DbTools
     Aiursoft.DbTools.Sqlite --> Aiursoft.DbTools
     Aiursoft.DbTools.MySql --> Aiursoft.DbTools
+    Aiursoft.DbTools.PostgreSql --> Aiursoft.DbTools
     Aiursoft.DbTools.Switchable --> Aiursoft.DbTools
     Demo.Entities --> Aiursoft.DbTools
     Demo.Sqlite --> Aiursoft.DbTools.Sqlite
     Demo.Sqlite --> Demo.Entities
     Demo.MySql --> Aiursoft.DbTools.MySql
     Demo.MySql --> Demo.Entities
+    Demo.PostgreSql --> Aiursoft.DbTools.PostgreSql
+    Demo.PostgreSql --> Demo.Entities
     Demo.InMemory --> Aiursoft.DbTools.InMemory
     Demo.InMemory --> Demo.Entities
     Demo.WebApp --> Aiursoft.DbTools.Switchable
     Demo.WebApp --> Demo.InMemory
     Demo.WebApp --> Demo.MySql
     Demo.WebApp --> Demo.Sqlite
+    Demo.WebApp --> Demo.PostgreSql
     Aiursoft.DbTools.SqlServer --> Aiursoft.DbTools
 ```
 
@@ -67,6 +71,7 @@ public void ConfigureServices(IConfiguration configuration, IWebHostEnvironment 
             // These comes from your database implementation projects.
             new MySqlSupportedDb(allowCache: allowCache, splitQuery: false),
             new SqliteSupportedDb(allowCache: allowCache, splitQuery: true),
+            new PostgreSqlSupportedDb(allowCache: allowCache, splitQuery: false),
             new InMemorySupportedDb()
         ]);
 
@@ -101,6 +106,19 @@ Or:
   }
 }
 ```
+Or:
+
+
+```json
+{
+  // sudo docker run --name kahla-postgres -e POSTGRES_DB=kahla -e POSTGRES_USER=kahla -e POSTGRES_PASSWORD=kahla_password -p 5432:5432 -d postgres:latest
+  "ConnectionStrings": {
+    "AllowCache": "True",
+    "DbType": "PostgreSql",
+    "DefaultConnection": "Server=localhost;Database=kahla;Uid=kahla;Pwd=kahla_password;"
+  }
+}
+```
 
 Or:
 
@@ -124,6 +142,10 @@ cd ..
 
 cd ./Demo.Sqlite
 dotnet ef migrations add Init --context "SqliteContext" -s ../Demo.WebApp/Demo.WebApp.csproj
+cd ..
+
+cd ./Demo.PostgreSql
+dotnet ef migrations add Init --context "PostgreSqlContext" -s ../Demo.WebApp/Demo.WebApp.csproj
 cd ..
 ```
 
