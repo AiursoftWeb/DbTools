@@ -2,7 +2,6 @@ using Aiursoft.DbTools.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aiursoft.DbTools.Tests;
 

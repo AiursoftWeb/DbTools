@@ -2,7 +2,6 @@ using Aiursoft.CSTools.Tools;
 using Demo.Entities;
 using Demo.WebApp;
 using Microsoft.Extensions.Hosting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static Aiursoft.WebTools.Extends;
 
 namespace Aiursoft.DbTools.Tests;
