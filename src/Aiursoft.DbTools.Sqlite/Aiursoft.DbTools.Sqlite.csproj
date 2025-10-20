@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>9.0.24</Version>
+    <Version>9.0.25</Version>
     <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools.Sqlite</AssemblyName>
     <RootNamespace>Aiursoft.DbTools.Sqlite</RootNamespace>
@@ -23,8 +23,8 @@
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />
-    <PackageReference Include="EFCoreSecondLevelCacheInterceptor.MemoryCache" Version="5.3.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.10" />
+    <PackageReference Include="EFCoreSecondLevelCacheInterceptor.MemoryCache" Version="5.3.3" />
     <None Include="../../Readme.md" Pack="true" PackagePath="." />
   </ItemGroup>
   <ItemGroup>
