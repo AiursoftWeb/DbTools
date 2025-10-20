@@ -32,7 +32,7 @@ public class EntityFrameworkExtendsTests
         await context.SaveChangesAsync();
         var results = await context.Books.ToListAsync();
 
-        Assert.AreEqual(3, results.Count);
+        Assert.HasCount(3, results);
         Assert.IsNotNull(results.SingleOrDefault(t => t.Name == "Book 1"));
         Assert.IsNotNull(results.SingleOrDefault(t => t.Name == "Book 2"));
         Assert.IsNotNull(results.SingleOrDefault(t => t.Name == "Book 3"));
