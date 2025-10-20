@@ -1,6 +1,7 @@
 ﻿using Aiursoft.DbTools.Sqlite;
 using Microsoft.Extensions.Hosting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+[assembly: DoNotParallelize]
 
 namespace Aiursoft.DbTools.Tests
 {
