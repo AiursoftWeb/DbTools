@@ -4,7 +4,7 @@
 [![Pipeline stat](https://gitlab.aiursoft.com/aiursoft/DbTools/badges/master/pipeline.svg)](https://gitlab.aiursoft.com/aiursoft/DbTools/-/pipelines)
 [![Test Coverage](https://gitlab.aiursoft.com/aiursoft/DbTools/badges/master/coverage.svg)](https://gitlab.aiursoft.com/aiursoft/DbTools/-/pipelines)
 [![NuGet version (Aiursoft.CSTools)](https://img.shields.io/nuget/v/Aiursoft.DbTools.svg)](https://www.nuget.org/packages/Aiursoft.DbTools/)
-[![ManHours](https://manhours.aiursoft.cn/r/gitlab.aiursoft.com/aiursoft/dbtools.svg)](https://gitlab.aiursoft.com/aiursoft/dbtools/-/commits/master?ref_type=heads)
+[![ManHours](https://manhours.aiursoft.com/r/gitlab.aiursoft.com/aiursoft/dbtools.svg)](https://gitlab.aiursoft.com/aiursoft/dbtools/-/commits/master?ref_type=heads)
 
 DbTools are Aiursoft's common database tools. It simplifies the process of registering DbContext and updating database. So your application can easily switch from different database types without editing the code.
 
