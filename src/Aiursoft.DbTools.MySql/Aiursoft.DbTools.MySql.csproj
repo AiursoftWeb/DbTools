@@ -21,9 +21,11 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://gitlab.aiursoft.com/aiursoft/dbtools</RepositoryUrl>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
+    <!--TODO: Remove this after the packages are upgraded to .NET 10-->
+    <NoWarn>5104</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+    <PackageReference Include="Aiursoft.EntityFrameworkCore.MySql" Version="10.0.1-servicing.1" />
     <PackageReference Include="EFCoreSecondLevelCacheInterceptor.MemoryCache" Version="5.3.3" />
     <None Include="../../Readme.md" Pack="true" PackagePath="." />
   </ItemGroup>

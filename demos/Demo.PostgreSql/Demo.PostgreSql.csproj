@@ -8,6 +8,8 @@
     <IsPackable>false</IsPackable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!--TODO: Remove this after the packages are upgraded to .NET 10-->
+    <NoWarn>NU1608</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Aiursoft.DbTools.PostgreSql\Aiursoft.DbTools.PostgreSql.csproj" />
