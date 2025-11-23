@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>10.0.1</Version>
+    <Version>10.0.2</Version>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools.PostgreSql</AssemblyName>
     <RootNamespace>Aiursoft.DbTools.PostgreSql</RootNamespace>
@@ -21,15 +21,12 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://gitlab.aiursoft.com/aiursoft/dbtools</RepositoryUrl>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
-    <!--TODO: Remove this after the packages are upgraded to .NET 10-->
     <NoWarn>NU1608,NU5104</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EFCoreSecondLevelCacheInterceptor.MemoryCache" Version="5.3.3" />
+    <PackageReference Include="EFCoreSecondLevelCacheInterceptor.MemoryCache" Version="5.3.4" />
     <None Include="../../Readme.md" Pack="true" PackagePath="." />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0-rc.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Aiursoft.DbTools\Aiursoft.DbTools.csproj" />
