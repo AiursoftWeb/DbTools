@@ -1,4 +1,5 @@
-﻿using EFCoreSecondLevelCacheInterceptor;
+﻿using System.Data.Common;
+using EFCoreSecondLevelCacheInterceptor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,17 @@ public static class RegisterExtensions
         string connectionString,
         bool allowCache = true,
         bool splitQuery = true)
+        where T : DbContext
+    {
+        return services.AddAiurMySqlWithCache<T>(connectionString, allowCache, splitQuery, null);
+    }
+
+    public static IServiceCollection AddAiurMySqlWithCache<T>(
+        this IServiceCollection services,
+        string connectionString,
+        bool allowCache,
+        bool splitQuery,
+        Action<DbConnection>? onConnectionOpen)
         where T : DbContext
     {
         services.AddDbContext<T>((serviceProvider, optionsAction) =>
@@ -33,6 +45,11 @@ public static class RegisterExtensions
             if (allowCache)
             {
                 builder.AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>());
+            }
+
+            if (onConnectionOpen != null)
+            {
+                builder.AddInterceptors(new ConnectionOpenedInterceptor(onConnectionOpen));
             }
         });
 

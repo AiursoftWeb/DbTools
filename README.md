@@ -151,6 +151,29 @@ cd ..
 
 For more usage, please check the `Demo` app in the `demos` folder!
 
+## Custom Database Connection Configuration
+
+You can configure the underlying database connection using the `onConnectionOpen` parameter. This is available for all relational databases (SQLite, MySQL, PostgreSQL, SQL Server).
+
+For example, when using SQLite, you can register custom SQL functions:
+
+```csharp
+services.AddAiurSqliteWithCache<AppDbContext>(
+    connectionString,
+    allowCache: true,
+    splitQuery: false,
+    onConnectionOpen: (connection) =>
+    {
+        // Cast to the specific connection type if needed
+        if (connection is Microsoft.Data.Sqlite.SqliteConnection sqliteConnection)
+        {
+             sqliteConnection.CreateFunction("MyCustomFunction", (int x) => x * 2);
+        }
+    });
+```
+
+This callback is invoked every time a database connection is opened.
+
 ## How to contribute
 
 There are many ways to contribute to the project: logging bugs, submitting pull requests, reporting issues, and creating suggestions.
