@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>10.0.13</Version>
+    <Version>10.0.14</Version>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools.InMemory</AssemblyName>
     <RootNamespace>Aiursoft.DbTools.InMemory</RootNamespace>
@@ -23,7 +23,7 @@
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.3" />
     <None Include="../../Readme.md" Pack="true" PackagePath="." />
   </ItemGroup>
   <ItemGroup>
