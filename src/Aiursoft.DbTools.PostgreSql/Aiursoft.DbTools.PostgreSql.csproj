@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>10.0.15</Version>
+    <Version>10.0.16</Version>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools.PostgreSql</AssemblyName>
     <RootNamespace>Aiursoft.DbTools.PostgreSql</RootNamespace>
@@ -26,7 +26,7 @@
   <ItemGroup>
     <PackageReference Include="EFCoreSecondLevelCacheInterceptor.MemoryCache" Version="5.3.9" />
     <None Include="../../Readme.md" Pack="true" PackagePath="." />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Aiursoft.DbTools\Aiursoft.DbTools.csproj" />
