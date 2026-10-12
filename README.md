@@ -56,15 +56,15 @@ stateDiagram-v2
 
 ## Usage
 
-### MySQL provider migration preview
+### MySQL provider migration
 
-`Aiursoft.DbTools.MySql` version `10.0.33-preview.1` uses
+`Aiursoft.DbTools.MySql` version `10.0.33` uses
 `Microting.EntityFrameworkCore.MySql` version `10.0.12`, replacing
-`Aiursoft.EntityFrameworkCore.MySql`. This is an opt-in preview for validating
-existing applications before a stable release:
+`Aiursoft.EntityFrameworkCore.MySql`. This stable release promotes the provider
+used in `10.0.33-preview.1` without further provider or API changes:
 
 ```bash
-dotnet add package Aiursoft.DbTools.MySql --version 10.0.33-preview.1
+dotnet add package Aiursoft.DbTools.MySql --version 10.0.33
 ```
 
 The `AddAiurMySqlWithCache` API and connection settings are unchanged. The new
@@ -83,7 +83,7 @@ and writes. If the provider detects a model change, investigate it before
 applying a migration. The Template and synthetic-ledger experiment does not
 establish compatibility for every application's model.
 
-Roll out the preview to selected applications first. Keep the previous package
+Roll out the upgrade to selected applications first. Keep the previous package
 and application build available for rollback, and validate provider replacement
 separately from business schema changes.
 
