@@ -56,6 +56,37 @@ stateDiagram-v2
 
 ## Usage
 
+### MySQL provider migration preview
+
+`Aiursoft.DbTools.MySql` version `10.0.33-preview.1` uses
+`Microting.EntityFrameworkCore.MySql` version `10.0.12`, replacing
+`Aiursoft.EntityFrameworkCore.MySql`. This is an opt-in preview for validating
+existing applications before a stable release:
+
+```bash
+dotnet add package Aiursoft.DbTools.MySql --version 10.0.33-preview.1
+```
+
+The `AddAiurMySqlWithCache` API and connection settings are unchanged. The new
+provider requires EF Core `10.0.12` or later within the `10.0.x` series and
+MySqlConnector `2.6.2` or later. Align any directly referenced EF Core packages
+before upgrading. Remove direct references to the previous MySQL provider so
+that the application resolves only one provider. Code using provider-specific
+`Pomelo.EntityFrameworkCore.MySql` namespaces or assembly names needs to use
+their `Microting.EntityFrameworkCore.MySql` equivalents.
+
+Keep existing migration files, model snapshots and `__EFMigrationsHistory`.
+Provider replacement alone should not require a schema migration. Validate each
+application against a restored database backup: check for unexpected model
+changes, inspect migration SQL, compare existing data and exercise its queries
+and writes. If the provider detects a model change, investigate it before
+applying a migration. The Template and synthetic-ledger experiment does not
+establish compatibility for every application's model.
+
+Roll out the preview to selected applications first. Keep the previous package
+and application build available for rollback, and validate provider replacement
+separately from business schema changes.
+
 In your `startup.cs`:
 
 ```csharp
