@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>10.0.33</Version>
+    <Version>10.0.34</Version>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools.SqlServer</AssemblyName>
     <RootNamespace>Aiursoft.DbTools.SqlServer</RootNamespace>
@@ -17,9 +17,9 @@
     <PackageId>Aiursoft.DbTools.SqlServer</PackageId>
     <PackageTags>nuget dotnet csproj dependencies database</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://gitlab.aiursoft.com/aiursoft/dbtools</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/AiursoftWeb/dbtools</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://gitlab.aiursoft.com/aiursoft/dbtools</RepositoryUrl>
+    <RepositoryUrl>https://github.com/AiursoftWeb/dbtools</RepositoryUrl>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
