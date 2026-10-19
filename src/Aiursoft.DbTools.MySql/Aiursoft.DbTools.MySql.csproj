@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>10.0.35</Version>
+    <Version>10.0.36</Version>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools.MySql</AssemblyName>
     <RootNamespace>Aiursoft.DbTools.MySql</RootNamespace>
@@ -17,9 +17,9 @@
     <PackageId>Aiursoft.DbTools.MySql</PackageId>
     <PackageTags>nuget dotnet csproj dependencies database</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://gitlab.aiursoft.com/aiursoft/dbtools</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/AiursoftWeb/dbtools</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://gitlab.aiursoft.com/aiursoft/dbtools</RepositoryUrl>
+    <RepositoryUrl>https://github.com/AiursoftWeb/dbtools</RepositoryUrl>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
     <NoWarn>5104</NoWarn>
   </PropertyGroup>
