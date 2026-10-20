@@ -3,6 +3,7 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/AiursoftWeb/dbtools/blob/master/LICENSE)
 [![Pipeline stat](https://gitlab.aiursoft.com/aiursoft/DbTools/badges/master/pipeline.svg)](https://gitlab.aiursoft.com/aiursoft/DbTools/-/pipelines)
 [![Test Coverage](https://gitlab.aiursoft.com/aiursoft/DbTools/badges/master/coverage.svg)](https://gitlab.aiursoft.com/aiursoft/DbTools/-/pipelines)
+[![S360 compliance](https://s360.aiursoft.com/badge.svg?project=aiursoft%2Fdbtools)](https://s360.aiursoft.com/SupplyChain?tab=projects&project=aiursoft%2Fdbtools&scope=baseline&ecosystem=all)
 [![NuGet version (Aiursoft.CSTools)](https://img.shields.io/nuget/v/Aiursoft.DbTools.svg)](https://www.nuget.org/packages/Aiursoft.DbTools/)
 [![Man hours](https://manhours.aiursoft.com/r/github.com/aiursoftweb/dbtools.svg)](https://manhours.aiursoft.com/r/github.com/aiursoftweb/dbtools.html)
 
