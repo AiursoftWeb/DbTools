@@ -25,10 +25,16 @@ public static class RegisterExtensions
         Action<DbConnection>? onConnectionOpen)
         where T : DbContext
     {
+        ServerVersion? serverVersion = null;
+        object? versionLock = null;
+
         services.AddDbContext<T>((serviceProvider, optionsAction) =>
         {
+            // Reuse successful detection across scopes; failed attempts remain retryable.
+            var detectedVersion = LazyInitializer.EnsureInitialized(
+                ref serverVersion, ref versionLock, () => ServerVersion.AutoDetect(connectionString));
             var builder = optionsAction
-                .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+                .UseMySql(connectionString, detectedVersion,
                     options =>
                     {
                         if (splitQuery)
