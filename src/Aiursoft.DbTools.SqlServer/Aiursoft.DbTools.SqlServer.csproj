@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>10.0.42</Version>
+    <Version>10.0.43</Version>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Aiursoft.DbTools.SqlServer</AssemblyName>
     <RootNamespace>Aiursoft.DbTools.SqlServer</RootNamespace>
@@ -26,7 +26,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.15" />
     <!-- Override SqlClient's vulnerable transitive dependency until upstream updates it. -->
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.15" />
-    <PackageReference Include="EFCoreSecondLevelCacheInterceptor.MemoryCache" Version="5.6.1" />
+    <PackageReference Include="EFCoreSecondLevelCacheInterceptor.MemoryCache" Version="5.6.2" />
     <None Include="../../Readme.md" Pack="true" PackagePath="." />
   </ItemGroup>
   <ItemGroup>
