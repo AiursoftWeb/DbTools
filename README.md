@@ -1,15 +1,27 @@
-# DBTools
+# Aiursoft DbTools
+
+<a name="dbtools"></a>
 
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/AiursoftWeb/dbtools/blob/master/LICENSE)
 [![Pipeline stat](https://badge-proxy.aiursoft.com/aiursoft/DbTools/badges/master/pipeline.svg)](https://gitlab.aiursoft.com/aiursoft/DbTools/-/pipelines)
 [![Test Coverage](https://badge-proxy.aiursoft.com/aiursoft/DbTools/badges/master/coverage.svg)](https://gitlab.aiursoft.com/aiursoft/DbTools/-/pipelines)
 [![S360 compliance](https://s360.aiursoft.com/badge.svg?project=aiursoft%2Fdbtools)](https://s360.aiursoft.com/SupplyChain?tab=projects&project=aiursoft%2Fdbtools&scope=baseline&ecosystem=all)
-[![NuGet version (Aiursoft.CSTools)](https://img.shields.io/nuget/v/Aiursoft.DbTools.svg)](https://www.nuget.org/packages/Aiursoft.DbTools/)
+[![NuGet version (Aiursoft.DbTools)](https://img.shields.io/nuget/v/Aiursoft.DbTools.svg)](https://www.nuget.org/packages/Aiursoft.DbTools/)
 [![Man hours](https://manhours.aiursoft.com/r/github.com/aiursoftweb/dbtools.svg)](https://manhours.aiursoft.com/r/github.com/aiursoftweb/dbtools.html)
 
 DbTools are Aiursoft's common database tools. It simplifies the process of registering DbContext and updating database. So your application can easily switch from different database types without editing the code.
 
-## How to install
+## Overview
+
+### What is DbTools?
+
+Register and migrate Entity Framework Core contexts with selectable database providers and optional connection configuration.
+
+## Installation
+
+Add the package to your .NET project:
+
+<a name="how-to-install"></a>
 
 Run the following command to install `Aiursoft.DbTools.Switchable` to your ASP.NET Core project from [nuget.org](https://www.nuget.org/packages/Aiursoft.DbTools.Switchable/):
 
@@ -55,9 +67,35 @@ stateDiagram-v2
     Aiursoft.DbTools.SqlServer --> Aiursoft.DbTools
 ```
 
+Requires .NET 10 or later.
+
 ## Usage
 
+Start with this complete console `Program.cs` after installing the package:
+
+```csharp
+using Aiursoft.DbTools.InMemory;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
+var services = new ServiceCollection();
+services.AddAiurInMemoryDb<ExampleDbContext>();
+using var provider = services.BuildServiceProvider();
+using var scope = provider.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService<ExampleDbContext>();
+await db.Database.EnsureCreatedAsync();
+Console.WriteLine(db.Database.ProviderName);
+
+public class ExampleDbContext(DbContextOptions<ExampleDbContext> options) : DbContext(options);
+```
+
+Install `Aiursoft.DbTools.InMemory` for the self-contained in-memory example above. For a production provider and switchable host, follow the original registration and migration walkthrough:
+
+<a name="usage"></a>
+
 ### MySQL provider migration
+
+<a name="mysql-provider-migration"></a>
 
 `Aiursoft.DbTools.MySql` version `10.0.33` uses
 `Microting.EntityFrameworkCore.MySql` version `10.0.12`, replacing
@@ -113,6 +151,55 @@ public void ConfigureServices(IConfiguration configuration, IWebHostEnvironment 
 }
 ```
 
+See Configuration for the complete SQLite, MySQL, PostgreSQL and in-memory settings.
+
+Simple, isn't it?
+
+Your database project need to be different with your web project, you need the following command to generate migrations:
+
+```bash
+cd ./Demo.MySql
+dotnet ef migrations add Init --context "MySqlContext" -s ../Demo.WebApp/Demo.WebApp.csproj
+cd ..
+
+cd ./Demo.Sqlite
+dotnet ef migrations add Init --context "SqliteContext" -s ../Demo.WebApp/Demo.WebApp.csproj
+cd ..
+
+cd ./Demo.PostgreSql
+dotnet ef migrations add Init --context "PostgreSqlContext" -s ../Demo.WebApp/Demo.WebApp.csproj
+cd ..
+```
+
+For more usage, please check the `Demo` app in the `demos` folder!
+
+### Custom Database Connection Configuration
+
+<a name="custom-database-connection-configuration"></a>
+
+You can configure the underlying database connection using the `onConnectionOpen` parameter. This is available for all relational databases (SQLite, MySQL, PostgreSQL, SQL Server).
+
+For example, when using SQLite, you can register custom SQL functions:
+
+```csharp
+services.AddAiurSqliteWithCache<AppDbContext>(
+    connectionString,
+    allowCache: true,
+    splitQuery: false,
+    onConnectionOpen: (connection) =>
+    {
+        // Cast to the specific connection type if needed
+        if (connection is Microsoft.Data.Sqlite.SqliteConnection sqliteConnection)
+        {
+             sqliteConnection.CreateFunction("MyCustomFunction", (int x) => x * 2);
+        }
+    });
+```
+
+This callback is invoked every time a database connection is opened.
+
+## Configuration
+
 In your `appsettings.json`:
 
 ```json
@@ -140,7 +227,6 @@ Or:
 ```
 Or:
 
-
 ```json
 {
   // sudo docker run --name kahla-postgres -e POSTGRES_DB=kahla -e POSTGRES_USER=kahla -e POSTGRES_PASSWORD=kahla_password -p 5432:5432 -d postgres:latest
@@ -163,53 +249,34 @@ Or:
 }
 ```
 
-Simple, isn't it?
+**Registration and migration**
 
-Your database project need to be different with your web project, you need the following command to generate migrations:
+Keep provider-specific contexts and migration projects separate from the web application as shown in Usage. `GetDbSettings()` reads the ConnectionStrings section; the original four configurations are preserved above. Use the existing demo projects to verify provider-specific migrations against disposable data.
+
+## Development
+
+Install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0).
+
+From the repository root, restore, build and test:
 
 ```bash
-cd ./Demo.MySql
-dotnet ef migrations add Init --context "MySqlContext" -s ../Demo.WebApp/Demo.WebApp.csproj
-cd ..
-
-cd ./Demo.Sqlite
-dotnet ef migrations add Init --context "SqliteContext" -s ../Demo.WebApp/Demo.WebApp.csproj
-cd ..
-
-cd ./Demo.PostgreSql
-dotnet ef migrations add Init --context "PostgreSqlContext" -s ../Demo.WebApp/Demo.WebApp.csproj
-cd ..
+dotnet restore Aiursoft.DbTools.sln
+dotnet build Aiursoft.DbTools.sln --no-restore
+dotnet test Aiursoft.DbTools.sln --no-restore
 ```
 
-For more usage, please check the `Demo` app in the `demos` folder!
-
-## Custom Database Connection Configuration
-
-You can configure the underlying database connection using the `onConnectionOpen` parameter. This is available for all relational databases (SQLite, MySQL, PostgreSQL, SQL Server).
-
-For example, when using SQLite, you can register custom SQL functions:
-
-```csharp
-services.AddAiurSqliteWithCache<AppDbContext>(
-    connectionString,
-    allowCache: true,
-    splitQuery: false,
-    onConnectionOpen: (connection) =>
-    {
-        // Cast to the specific connection type if needed
-        if (connection is Microsoft.Data.Sqlite.SqliteConnection sqliteConnection)
-        {
-             sqliteConnection.CreateFunction("MyCustomFunction", (int x) => x * 2);
-        }
-    });
-```
-
-This callback is invoked every time a database connection is opened.
+Run `./lint.sh` for the existing static checks.
 
 ## How to contribute
 
+<a name="how-to-contribute"></a>
+
 There are many ways to contribute to the project: logging bugs, submitting pull requests, reporting issues, and creating suggestions.
 
-Even if you with push rights on the repository, you should create a personal fork and create feature branches there when you need them. This keeps the main repository clean and your workflow cruft out of sight.
+Even if you have push rights on the repository, you should create a personal fork and create feature branches there when you need them. This keeps the main repository clean and your workflow cruft out of sight.
 
 We're also interested in your feedback on the future of this project. You can submit a suggestion or feature request through the issue tracker. To make this process more effective, we're asking that these include more information to help define them more clearly.
+
+## License
+
+Licensed under the [MIT License](https://github.com/AiursoftWeb/dbtools/blob/master/LICENSE).
